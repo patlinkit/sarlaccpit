@@ -1,8 +1,11 @@
+param(
+  [Parameter(Mandatory = $false)]
+  [string]
+  $ReportFile = "c:\aipoint\report.csv"
+)
+
 # This script creates a report based on members of all groups supplied by Azure...
 # This script assumes you have already used Connect-AzureAD...
-
-## TO DO: Define report file path, change as you wish... 
-$reportFile = "c:\aipoint\report.csv"
 
 function Get-AzureAADReport {
   # First, lets get some group specifics...
@@ -15,10 +18,10 @@ function Get-AzureAADReport {
     $groupTable2 = @{}
 
     # Now we set our reference variable...
-    $infoGroup = Get-AzureADGroup -All $true | Select-Object ObjectId,ObjectType,DisplayName
+    $infoGroup = Get-AzureADGroup -All $true | Select-Object ObjectId, ObjectType, DisplayName
 
     # Create the report file...
-    New-Item -Path $reportFile -Force
+    New-Item -Path $ReportFile -Force
   }
   # Now lets get those specifics into the hashtables...
   process {
@@ -37,19 +40,19 @@ function Get-AzureAADReport {
     foreach ($key in $groupTable.keys) {
       try {
         # Add a separator line to the report...
-        "" | Out-File -FilePath $reportFile -Append
+        "" | Out-File -FilePath $ReportFile -Append
         # Define the new group line...
         $newgroupline = '*-*-*-*-{0} ({1})-*-*-*-*' -f $groupTable[$key], $groupTable2[$key]
         # Add the new group line to the report...
-        Out-File -FilePath $reportFile -InputObject $newgroupline -Append
+        Out-File -FilePath $ReportFile -InputObject $newgroupline -Append
         # Define members' Display Names and User Principal Names...
-        $memberships = Get-AzureADGroupMember -ObjectId $key | Select-Object DisplayName,UserPrincipalName
+        $memberships = Get-AzureADGroupMember -ObjectId $key | Select-Object DisplayName, UserPrincipalName
         # For each line in memberships...
         foreach ($membership in $memberships) {
           # Define the new membership line...
-          $newmembershipline = '{0},{1}' -f "$($membership.DisplayName)","$($membership.UserPrincipalName)" 
+          $newmembershipline = '{0},{1}' -f "$($membership.DisplayName)", "$($membership.UserPrincipalName)" 
           # Add the new  membership line to the report...
-          Out-File -FilePath $reportFile -InputObject $newmembershipline -Append
+          Out-File -FilePath $ReportFile -InputObject $newmembershipline -Append
         }
       }
       # Just in case, lets make sure we catch any errors...
@@ -60,8 +63,8 @@ function Get-AzureAADReport {
   }
 }
 
-Write-Host "$(Get-Date -format 'u') [Begin] The report will be generated here: $reportFile"
+Write-Host "$(Get-Date -format 'u') [Begin] The report will be generated here: $ReportFile"
 
 Get-AzureAADReport
 
-Write-Host "$(Get-Date -format 'u') [End] The report has been saved here: $reportFile"
+Write-Host "$(Get-Date -format 'u') [End] The report has been saved here: $ReportFile"
