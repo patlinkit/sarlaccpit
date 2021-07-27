@@ -18,7 +18,7 @@ function Get-AzureADReport {
     $groupTable2 = @{}
 
     # Now we set our reference variable...
-    $infoGroup = Get-AzADGroup -All $true | Select-Object ObjectId, ObjectType, DisplayName
+    $infoGroup = Get-AzADGroup | Select-Object ObjectId, ObjectType, DisplayName
 
     # Create the report file...
     New-Item -Path $ReportFile -Force
