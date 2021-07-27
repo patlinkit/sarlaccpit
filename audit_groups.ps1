@@ -7,7 +7,7 @@ param(
 # This script creates a report based on members of all groups supplied by Azure...
 # This script assumes you have already used Connect-AzureAD...
 
-function Get-AzureAADReport {
+function Get-AzureADReport {
   # First, lets get some group specifics...
   begin {
     # Set hashtables to null then define as empty...
@@ -65,6 +65,6 @@ function Get-AzureAADReport {
 
 Write-Host "$(Get-Date -format 'u') [Begin] The report will be generated here: $ReportFile"
 
-Get-AzureAADReport
+Get-AzureADReport
 
 Write-Host "$(Get-Date -format 'u') [End] The report has been saved here: $ReportFile"
