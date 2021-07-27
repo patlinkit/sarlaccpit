@@ -47,8 +47,12 @@ function Get-AzureADReport {
   }
 }
 
-Write-Host "$(Get-Date -format 'u') [Begin] The report will be generated here: $ReportFile"
+function Main {
+  Write-Host "$(Get-Date -format 'u') [Begin] The report will be generated here: $ReportFile"
 
-Get-AzureADReport
+  Get-AzureADReport
 
-Write-Host "$(Get-Date -format 'u') [End] The report has been saved here: $ReportFile"
+  Write-Host "$(Get-Date -format 'u') [End] The report has been saved here: $ReportFile"
+}
+
+Main
