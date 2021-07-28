@@ -1,2 +1,2 @@
 # sarlaccpit
-A gneeral repository for my public scripts, enjoy!
+A general repository for my public scripts, enjoy!
