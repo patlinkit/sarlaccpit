@@ -57,7 +57,7 @@ function Get-AzureADReport {
     foreach ($group in $aadGroups) {
       while ( (Get-Job | Where-Object -Property State -eq "Running").Count -eq $DoP ) { <# Wait for instance count to be less than DoP #> }
       $completedJobs = Get-Job | Where-Object -Property State -eq "Completed"
-      if($completedJobs){
+      if ($completedJobs) {
         $completedJobs | ForEach-Object {
           $results = $_ | Receive-Job
           $results | Select-Object -Property GroupName, DisplayName, Id, Type, UserPrincipalName | Export-Csv -Path $ExportFilePath -Append -NoTypeInformation -Force
@@ -70,7 +70,7 @@ function Get-AzureADReport {
 
       Start-Job -Name $group.DisplayName -ScriptBlock {
         $groupMembers = Get-AzADGroupMember -GroupObjectId $using:group.Id
-        foreach($member in $groupMembers){
+        foreach ($member in $groupMembers) {
           $member | Add-Member -MemberType NoteProperty -Name GroupName -Value $using:group.DisplayName
           $member | Select-Object -Property GroupName, DisplayName, Id, Type, UserPrincipalName
         }
@@ -79,7 +79,7 @@ function Get-AzureADReport {
   
     While (Get-Job | Where-Object -Property State -eq "Running") { <# Wait For All Jobs To Complete #>> }
     $completedJobs = Get-Job | Where-Object -Property State -eq "Completed"
-    if($completedJobs){
+    if ($completedJobs) {
       $completedJobs | ForEach-Object {
         $results = $_ | Receive-Job
         $results | Select-Object -Property GroupName, DisplayName, Id, Type, UserPrincipalName | Export-Csv -Path $ExportFilePath -Append -NoTypeInformation -Force
@@ -93,12 +93,12 @@ function Get-AzureADReport {
 }
 
 function Main {
-  if($null -eq $ReportFilePath){
-    $date = (Get-Date -Format o -AsUTC) -replace (":",".")
+  if ([string]::IsNullOrEmpty($ReportFilePath)) {
+    $date = (Get-Date -Format o -AsUTC) -replace (":", ".")
     $ReportFilePath = ("$home{0}Desktop{0}AzureADReport-$date.csv") -f [IO.Path]::DirectorySeparatorChar
   }
 
-  if($null -eq (Get-AzContext)){
+  if ($null -eq (Get-AzContext)) {
     Connect-AzAccount
   }
 
