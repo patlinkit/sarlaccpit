@@ -77,7 +77,7 @@ function Get-AzureADReport {
       } | Out-Null
     }
   
-    While (Get-Job | Where-Object -Property State -eq "Running") { <# Wait For All Jobs To Complete #>> }
+    While (Get-Job | Where-Object -Property State -eq "Running") { <# Wait For All Jobs To Complete #> }
     $completedJobs = Get-Job | Where-Object -Property State -eq "Completed"
     if ($completedJobs) {
       $completedJobs | ForEach-Object {
