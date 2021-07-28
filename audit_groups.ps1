@@ -30,6 +30,7 @@ PS> .\Get-AzureADReport.ps1
 PS> .\Get-AzureADReport.ps1 -ReportFilePath C:\Data\January.csv
 
 #>
+#Requires -Modules Az
 
 param(
   [Parameter(Mandatory = $false)]
